@@ -128,11 +128,18 @@ table {
   border-spacing: 0;
 }
 /** end reset css**/
+
 body {
-  max-width: 1140px;
   margin: auto;
   font-family: "Work Sans";
   font-size: 14px;
+}
+
+.main-content {
+  max-width: 1140px;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
 }
 header {
   display: flex;
@@ -215,6 +222,11 @@ li a {
 #portfolio h2 {
   text-align: center;
   margin-bottom: 1em;
+}
+
+.portfolio-title {
+  display: flex;
+  justify-content: center;
 }
 
 .filter {
@@ -303,12 +315,18 @@ footer nav ul {
   font-size: 16px;
 } */
 
+/* ---- page LOGIN -----*/
+
 #login {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-top: 10vh;
   padding-bottom: 20vh;
+}
+
+#login-page li:nth-child(3) {
+  font-weight: 700;
 }
 
 #login form {
@@ -353,4 +371,155 @@ footer nav ul {
   color: red;
   font-weight: 600;
   padding-top: 20px;
+}
+
+/* ------ Admin Mode ---------- */
+
+.filter-hidden {
+  display: none;
+}
+
+.tohide {
+  /* display: none; */
+}
+
+.admin-mode {
+  height: 60px;
+  background-color: black;
+  color: white;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mode-edition a {
+  text-decoration: none;
+  color: white;
+}
+.publish {
+  background-color: white;
+  color: black;
+  border-radius: 30px;
+  margin-left: 20px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.modify {
+  margin: 20px 0;
+  /* margin-left: 57px; */
+  /* display: none; */
+}
+.modify a {
+  text-decoration: none;
+  color: black;
+}
+
+/* ---- MODALE ---- */
+
+.modal {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.modal-wrapper {
+  overflow: hidden;
+  width: 630px;
+  height: 780px;
+  max-width: calc(100vw - 20px);
+  max-height: calc(100vh - 20px);
+  padding: 50px 100px;
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.btn-close {
+  position: relative;
+}
+
+.btn-close i {
+  display: block;
+  position: absolute;
+  right: -50px;
+  font-weight: 900;
+}
+
+.modal-wrapper h3 {
+  text-align: center;
+  font-size: 1.8em;
+  font-weight: 500;
+  margin-top: 40px;
+  margin-bottom: 45px;
+}
+
+.modal-gallery {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-column-gap: 20px;
+  grid-row-gap: 20px;
+}
+
+.modal-gallery figure {
+  position: relative;
+}
+.icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  margin-top: 6px;
+}
+
+.modal-gallery figure i {
+  width: 1.5em;
+  font-size: 16px;
+  background-color: black;
+  color: white;
+  height: 25px;
+  padding: auto;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.modal-gallery img {
+  width: 100%;
+}
+.modal-gallery a {
+  text-decoration: none;
+  color: black;
+}
+
+.separation {
+  border: 1px solid lightgray;
+  margin: 40px 0 20px 0;
+}
+
+.modal-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-buttons input {
+  height: 36px;
+  width: 15vw;
+  font-size: 0.9em;
+  border: none;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+.modal-buttons a {
+  text-decoration: none;
+  color: #b1663c;
 }

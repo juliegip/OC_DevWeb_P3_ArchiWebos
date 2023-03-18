@@ -14,47 +14,49 @@
     <link rel="stylesheet" href="./assets/style.css" />
   </head>
   <body>
-    <header>
-      <h1>
-        <a href="index.html">
-          Sophie Bluel <span>Architecte d'intérieur</span></a
-        >
-      </h1>
-      <nav>
-        <ul>
-          <li><a href="#">projets</a></li>
-          <li><a href="#">contact</a></li>
-          <li><a href="login.html" target="_blank">login</a></li>
-          <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
-        </ul>
-      </nav>
-    </header>
-    <main>
-      <section id="login">
-        <h2>Log In</h2>
+    <div class="main-content">
+      <header>
+        <h1>
+          <a href="index.html">
+            Sophie Bluel <span>Architecte d'intérieur</span></a
+          >
+        </h1>
+        <nav>
+          <ul id="login-page">
+            <li><a href="#">projets</a></li>
+            <li><a href="#">contact</a></li>
+            <li><a href="login.html" target="_blank">login</a></li>
+            <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
+          </ul>
+        </nav>
+      </header>
+      <main>
+        <section id="login">
+          <h2>Log In</h2>
 
-        <form id="form-id">
-          <div class="login-item">
-            <label for="email">E-mail</label>
-            <input type="text" name="email" id="email" required />
-          </div>
-          <div class="login-item">
-            <label for="password">Mot de passe</label>
-            <input type="password" name="password" id="password" required />
-          </div>
-          <input type="submit" value="Se connecter" />
-          <p><a href="#">Mot de passe oublié</a></p>
-          <p class="msg-error"></p>
-        </form>
-      </section>
-    </main>
-    <footer>
-      <nav>
-        <ul>
-          <li>Mentions Légales</li>
-        </ul>
-      </nav>
-    </footer>
-    <script src="login.js"></script>
+          <form id="form-id">
+            <div class="login-item">
+              <label for="email">E-mail</label>
+              <input type="text" name="email" id="email" required />
+            </div>
+            <div class="login-item">
+              <label for="password">Mot de passe</label>
+              <input type="password" name="password" id="password" required />
+            </div>
+            <input type="submit" value="Se connecter" />
+            <p><a href="#">Mot de passe oublié</a></p>
+            <p class="msg-error"></p>
+          </form>
+        </section>
+      </main>
+      <footer>
+        <nav>
+          <ul>
+            <li>Mentions Légales</li>
+          </ul>
+        </nav>
+      </footer>
+      <script src="login.js"></script>
+    </div>
   </body>
 </html>

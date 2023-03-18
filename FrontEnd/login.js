@@ -1,5 +1,5 @@
 
-const connect = document.querySelector("#form-id").addEventListener("submit",function(e){
+document.querySelector("#form-id").addEventListener("submit",function(e){
     
         e.preventDefault();
         const loginDetails = {
@@ -7,6 +7,7 @@ const connect = document.querySelector("#form-id").addEventListener("submit",fun
                 password: e.target.querySelector("[name=password]").value
             };
             console.log("LoginDetails  :",loginDetails);
+            
         
         fetch("http://localhost:5678/api/users/login", {
             method:"POST",
@@ -24,7 +25,8 @@ const connect = document.querySelector("#form-id").addEventListener("submit",fun
                 .then(data => {
                         console.log("le token est:",data.token)
                         window.localStorage.setItem("token",data.token);
-                        window.location = "index.html";
+                        // window.location = "index.html";
+                        adminmode();
                 })
                 .catch(error => {
                     console.error(error);
