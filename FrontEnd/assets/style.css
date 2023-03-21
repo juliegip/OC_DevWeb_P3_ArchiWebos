@@ -196,6 +196,15 @@ li a:visited {
 li a {
   text-decoration: none;
 }
+
+#menu-login-page:nth-child(3) {
+  font-weight: 900;
+}
+
+#logout-menu {
+  font-weight: 900;
+}
+
 #introduction {
   display: flex;
   align-items: center;
@@ -234,6 +243,7 @@ li a {
   justify-content: center;
   margin: 10px auto;
   margin-bottom: 50px;
+  /* display: none; */
 }
 
 .btn-filter {
@@ -325,7 +335,7 @@ footer nav ul {
   padding-bottom: 20vh;
 }
 
-#login-page li:nth-child(3) {
+#menu-login-page li:nth-child(3) {
   font-weight: 700;
 }
 
@@ -375,13 +385,13 @@ footer nav ul {
 
 /* ------ Admin Mode ---------- */
 
-.filter-hidden {
+.admin-elements {
   display: none;
 }
 
-/* .tohide {
-  display: none;
-} */
+.show-as-admin {
+  display: null;
+}
 
 .admin-mode {
   height: 60px;
@@ -416,6 +426,11 @@ footer nav ul {
 .modify a {
   text-decoration: none;
   color: black;
+  text-transform: lowercase;
+}
+
+.modify a i {
+  text-transform: lowercase;
 }
 
 /* ---- MODALE ---- */
@@ -436,8 +451,8 @@ footer nav ul {
   overflow: hidden;
   width: 630px;
   height: 780px;
-  max-width: calc(100vw - 20px);
-  max-height: calc(100vh - 20px);
+  max-width: calc(100vw - 30px);
+  max-height: calc(100vh - 50px);
   padding: 50px 100px;
   background-color: #fff;
   border-radius: 10px;

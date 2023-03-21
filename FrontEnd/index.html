@@ -13,13 +13,14 @@
     <meta name="description" content="" />
     <link rel="stylesheet" href="./assets/style.css" />
     <script type="module" src="works.js"></script>
+
     <script
       src="https://kit.fontawesome.com/3e106b875f.js"
       crossorigin="anonymous"
     ></script>
   </head>
   <body>
-    <div class="tohide">
+    <div id="admin-header" class="admin-elements">
       <div class="admin-mode">
         <div class="mode-edition">
           <a href="#">
@@ -38,23 +39,27 @@
           >
         </h1>
         <nav>
-          <ul>
+          <ul id="menu">
             <li><a href="#">projets</a></li>
             <li><a href="#">contact</a></li>
-            <li><a href="login.html">login</a></li>
+            <li id="login-menu"><a href="login.html">login</a></li>
+            <li id="logout-menu" class="admin-elements">
+              <a href="#">logout</a>
+            </li>
             <li><img src="./assets/icons/instagram.png" alt="Instagram" /></li>
           </ul>
         </nav>
       </header>
       <main>
         <section>
+          <button id="test">TEST</button>
           <div id="introduction">
             <figure>
               <img src="./assets/images/sophie-bluel.png" alt="" />
             </figure>
 
             <article>
-              <div class="modify modify-intro">
+              <div class="modify admin-elements">
                 <a href="#">
                   <i class="fa-regular fa-pen-to-square"></i
                   ><span> modifier</span></a
@@ -78,7 +83,7 @@
               </p>
             </article>
           </div>
-          <div class="modify modify-photo">
+          <div class="modify admin-elements">
             <a href="#">
               <i class="fa-regular fa-pen-to-square"></i
               ><span> modifier</span></a
@@ -89,15 +94,13 @@
         <section id="portfolio">
           <div class="portfolio-title">
             <h2>Mes Projets</h2>
-            <div class="modify modify-projects">
-              <a href="#modal1">
-                <i class="fa-regular fa-pen-to-square"></i
-                ><span> modifier</span></a
-              >
+            <div class="modify admin-elements">
+              <i class="fa-regular fa-pen-to-square"></i>
+              <a href="#modal1" class="js-modal">modifier</a>
             </div>
           </div>
-          <div class="filter filter-hidden">
-            <button class="btn-filter resetfilter btn-selected">Tous</button>
+          <div class="filter">
+            <button class="btn-filter btn-selected resetfilter">Tous</button>
             <button class="btn-filter">Objets</button>
             <button class="btn-filter">Appartements</button>
             <button class="btn-filter">Hotels & restaurants</button>
@@ -131,12 +134,14 @@
         aria-hidden="true"
         role="dialog"
         aria-labelledby="modal-title"
+        style="display: none"
       >
-        <div class="modal-wrapper">
-          <div class="btn-close"><i class="fa-solid fa-x"></i></div>
+        >
+        <div class="modal-wrapper js-modal-stop">
+          <div class="js-modal-close"><i class="fa-solid fa-x"></i></div>
           <h3 id="modal-title">Galerie photo</h3>
           <div class="modal-gallery">
-            <figure>
+            <!-- <figure>
               <div class="icon-container">
                 <i class="fa-solid fa-arrows-up-down-left-right"></i>
                 <i class="fa-solid fa-trash-can"></i>
@@ -146,77 +151,7 @@
                 alt="Abajour Tahina"
               />
               <figcaption><a href="#">éditer</a></figcaption>
-            </figure>
-            <figure>
-              <img
-                src="assets/images/appartement-paris-v.png"
-                alt="Appartement Paris V"
-              />
-              <figcaption><a href="#">éditer</a></figcaption>
-            </figure>
-            <figure>
-              <img
-                src="assets/images/restaurant-sushisen-londres.png"
-                alt="Restaurant Sushisen - Londres"
-              />
-              <figcaption><a href="#">éditer</a></figcaption>
-            </figure>
-            <figure>
-              <img
-                src="assets/images/la-balisiere.png"
-                alt="Villa “La Balisiere” - Port Louis"
-              />
-              <figcaption><a href="#">éditer</a></figcaption>
-            </figure>
-            <figure>
-              <img
-                src="assets/images/structures-thermopolis.png"
-                alt="Structures Thermopolis"
-              />
-              <figcaption><a href="#">éditer</a></figcaption>
-            </figure>
-            <figure>
-              <img
-                src="assets/images/appartement-paris-x.png"
-                alt="Appartement Paris X"
-              />
-              <figcaption><a href="#">éditer</a></figcaption>
-            </figure>
-            <figure>
-              <img
-                src="assets/images/le-coteau-cassis.png"
-                alt="Pavillon “Le coteau” - Cassis"
-              />
-              <figcaption><a href="#">éditer</a></figcaption>
-            </figure>
-            <figure>
-              <img
-                src="assets/images/villa-ferneze.png"
-                alt="Villa Ferneze - Isola d’Elba"
-              />
-              <figcaption><a href="#">éditer</a></figcaption>
-            </figure>
-            <figure>
-              <img
-                src="assets/images/appartement-paris-xviii.png"
-                alt="Appartement Paris XVIII"
-              />
-              <figcaption><a href="#">éditer</a></figcaption>
-            </figure>
-            <figure>
-              <img
-                src="assets/images/bar-lullaby-paris.png"
-                alt="Bar “Lullaby” - Paris"
-              />
-              <figcaption><a href="#">éditer</a></figcaption>
-            </figure>
-            <figure>
-              <img
-                src="assets/images/hotel-first-arte-new-delhi.png"
-                alt="Hotel First Arte - New Delhi"
-              />
-              <figcaption><a href="#">éditer</a></figcaption>
-            </figure>
+            </figure> -->
           </div>
           <div class="separation"></div>
           <div class="modal-buttons">
