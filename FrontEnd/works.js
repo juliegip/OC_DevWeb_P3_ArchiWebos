@@ -174,11 +174,11 @@ function viewModalAdd() {
     
     const projectToAddPhoto = document.getElementById("input-photo")
     projectToAddPhoto.addEventListener("change",previewimg)
-    console.log("projectToAddPhoto",projectToAddPhoto)
+    // console.log("projectToAddPhoto",projectToAddPhoto)
     
-    const form = document.getElementById("post-project")
+    const form = document.getElementById("form-addProject")
         form.addEventListener("submit",addProject);
-        console.log("form",form);
+        // console.log("form",form);
 
 
 };
@@ -247,48 +247,50 @@ function deleteProject(projectId,figure) {
 
 // Ajouter un projet :
 
-function previewimg(projectToAddPhoto){
+function previewimg(){
     const hideicon = document.querySelector(".fa-image");
     hideicon.classList.add("js-hide");
+    hideicon.classList.remove("fa-regular");
+    console.log(hideicon);
     
     const preview = document.getElementById('preview');
     while(preview.firstChild) {
         preview.removeChild(preview.firstChild)}
-        const file = this.files[0];
-        const reader = new FileReader();
-        reader.addEventListener("load", function(){
-            preview.src = reader.result;
-        });
-        if (file){
-            reader.readAsDataURL(file);
-        }
+    const file = this.files[0];
+    const reader = new FileReader();
+    reader.addEventListener("load", function(){
+        preview.src = reader.result;
+    });
+
+    if (file){
+        reader.readAsDataURL(file);
+    }
 
 
 };
 
 
-function addProject(e) {
+async function addProject(e) {
     e.preventDefault();
-  
-    const image = document.getElementById("input-photo").files[0];
-    console.log(typeof image)
-    const titre = document.getElementById("titre").textContent;
-    console.log(typeof titre)
-    const categorie = parseInt(document.getElementById("categorie").value);
-    console.log(typeof categorie)
-
-    const formdata = new FormData();
+    
+    const newImg = document.getElementById("input-photo").files[0];
     const reader = new FileReader();
-  
-    reader.onload = function () {
-      const imagebinary = reader.onload.result
-      console.log("imagebinary",imagebinary)
+    reader.addEventListener("load",() => {
+      const imageBinary = reader.result;
 
- 
-      formdata.append("image",imagebinary);
+      const titre = document.getElementById("titre").value;
+    //   console.log(typeof titre)
+      const categorie = parseInt(document.getElementById("categorie").value);
+    //   console.log(typeof categorie)
+  
+      const formdata = new FormData();
+      formdata.append("image", newImg);
       formdata.append("title", titre);
       formdata.append("category", categorie);
-  
+
+      console.log([...formdata.entries()]);
+
+ 
       fetch(`${urlAPI}`, {
         method: "POST",
         headers: {
@@ -296,27 +298,22 @@ function addProject(e) {
         },
         body: formdata,
       })
-        .then(res => {
-          if (res.ok) {
-            console.log("Nouveau projet ajouté!");
-            const hideicon = document.querySelector(".fa-image");
-            hideicon.classList.remove("js-hide");
-          } else {
-            console.log("Le projet n'a pas pu être ajouté");
-          }
-          return res;
-        })
-        .then(res => console.log(res))
-        .catch(error => console.log(error));
-    };
+      .then(res => {
+        if (res.ok) {
+          console.log("Nouveau projet ajouté!");
+          const hideicon = document.querySelector(".fa-image");
+          hideicon.classList.remove("js-hide");
+        } else {
+          console.log("Le projet n'a pas pu être ajouté");
+        }
+        return res;
+      })
+      .then(res => console.log(res))
+      .catch(error => console.log(error));
+    });
+    reader.readAsArrayBuffer(newImg);
+  };
   
-    reader.readAsBinaryString(image);
-  }
-
-    
-
-
-
 
 // Code
 
