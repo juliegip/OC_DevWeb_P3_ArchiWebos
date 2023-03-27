@@ -4,13 +4,20 @@ if (token !== undefined && token!== null){
     adminMode()};
 
 const urlAPI = 'http://localhost:5678/api/works'
-const response = await fetch (urlAPI);
-const works = await response.json();
-// const valeurWorks = JSON.stringify(works);
 const mainGallery  = document.querySelector(".gallery");
 const modalGallery  = document.querySelector(".modal-gallery");
 
+let works = [];
+
+async function callAPI() {
+    const response = await fetch (urlAPI);
+    works = await response.json();
+    generateWorks(works)
+    console.log(works)
+  }
+
 function generateWorks(works) {
+
     for (let i=0 ; i< works.length; i++) {
 
         const projet = works[i];
@@ -31,8 +38,10 @@ function generateWorks(works) {
         // Rattachement des éléments d'un projet
         elementProjet.appendChild(image);
         elementProjet.appendChild(caption);
+     
+        
+};};
 
-}};
 
 function adminMode(){
 
@@ -69,6 +78,7 @@ function logOut(){
 
 // Gestion des filtres 
 function filterGallery(event) {
+        
     btnFilter.forEach(btn => {
     btn.classList.remove("btn-selected");
   });
@@ -119,8 +129,7 @@ const openModal = function (e){
         trashables.forEach(function(icon){
             icon.addEventListener("click",function(){
                 const figure = icon.closest("figure")
-                const projectId = figure.getAttribute('data-id');
-                console.log("Delete project:",projectId);
+                const projectId = figure.getAttribute('data-id');           
                 deleteProject(projectId,figure);
             })
         })
@@ -132,9 +141,13 @@ const openModal = function (e){
 }
 
 const closeModal = function (e){
-    viewModalMain();
-    if (modal == null) return
     e.preventDefault()
+    viewModalMain();
+    cleanGalery();
+    callAPI();
+
+    if (modal == null) return
+
     modal.style.display = "none";
     modal.setAttribute("aria-hidden","true");
     modal.removeAttribute("aria-modal");
@@ -144,6 +157,8 @@ const closeModal = function (e){
     modal.querySelector(".js-modal-stop").removeEventListener("click",stopPropagation);
 
     modal = null
+
+   
 
 }
 
@@ -178,17 +193,14 @@ function viewModalAdd() {
     
     const form = document.getElementById("form-addProject")
         form.addEventListener("submit",addProject);
-        // console.log("form",form);
-
-
+        
 };
 
 
 // Gestion de la galerie dans la modale 
 
-function generateWorksInModal(works) {
-    console.log(works);
-    
+function generateWorksInModal() {
+
     while (modalGallery.firstChild) {
         modalGallery.firstChild.remove()}
 
@@ -202,26 +214,33 @@ function generateWorksInModal(works) {
         // Création des balises d'un projet
         const iconContainer = document.createElement("div");
         iconContainer.classList.add("js-icon-container");
-        iconContainer.innerHTML = `<i class="fa-solid fa-arrows-up-down-left-right"></i>
-        <i class="fa-solid fa-trash-can"></i>`        
+        const iconArrow = document.createElement("i");
+        iconArrow.classList.add("fa-solid", "fa-arrows-up-down-left-right");
+        const iconTrash = document.createElement("i");
+        iconTrash.classList.add("fa-solid", "fa-trash-can");
+  
         const caption = document.createElement("figcaption");
         caption.innerText = "éditer"
         const image = document.createElement("img");
         image.src = projet.imageUrl;
          
-
         // Rattachement de la balise projet à la section Gallery
         modalGallery.appendChild(elementProjet);
 
+        
+        //Rattachement des icons 
+        iconContainer.appendChild(iconArrow);
+        iconContainer.appendChild(iconTrash)
+
         // Rattachement des éléments d'un projet
-        elementProjet.appendChild(iconContainer)
+        elementProjet.appendChild(iconContainer);
         elementProjet.appendChild(image);
         elementProjet.appendChild(caption);
-
 
 }};
 
 // Fonctionnalités Admin : ajout, suppresion de projet 
+// Supprimer un projet :
 function deleteProject(projectId,figure) {
 
     fetch(`${urlAPI}/${projectId}`,{
@@ -238,24 +257,28 @@ function deleteProject(projectId,figure) {
     .then(()=>{
         figure.remove();
         const msgDeleteProject = document.querySelector("p.msg-delete");
-                msgDeleteProject.textContent =`Projet ${projectId} supprimé`
+            msgDeleteProject.textContent =`Projet ${projectId} supprimé`
+        setTimeout(() => { msgDeleteProject.classList.add("js-hide")
+        }, 2000); 
+       
     })
     .catch(error => console.log(error));
-        
+    console.log("works",works)  
 };
 
 
 // Ajouter un projet :
-
 function previewimg(){
     const hideicon = document.querySelector(".fa-image");
-    hideicon.classList.add("js-hide");
-    hideicon.classList.remove("fa-regular");
-    console.log(hideicon);
-    
+    hideicon.classList.add("js-hide")
+    const hideLabel = document.querySelector(".label-input-photo");
+    hideLabel.classList.add("js-hide")
+    const hideP = document.querySelector(".grey p");
+    hideP.classList.add("js-hide")
+        
     const preview = document.getElementById('preview');
-    while(preview.firstChild) {
-        preview.removeChild(preview.firstChild)}
+    // while(preview.firstChild) {
+    //     preview.removeChild(preview.firstChild)}
     const file = this.files[0];
     const reader = new FileReader();
     reader.addEventListener("load", function(){
@@ -265,33 +288,21 @@ function previewimg(){
     if (file){
         reader.readAsDataURL(file);
     }
-
-
 };
-
 
 async function addProject(e) {
     e.preventDefault();
     
     const newImg = document.getElementById("input-photo").files[0];
-    const reader = new FileReader();
-    reader.addEventListener("load",() => {
-      const imageBinary = reader.result;
-
-      const titre = document.getElementById("titre").value;
-    //   console.log(typeof titre)
-      const categorie = parseInt(document.getElementById("categorie").value);
-    //   console.log(typeof categorie)
+    const titre = document.getElementById("titre").value;
+    const categorie = parseInt(document.getElementById("categorie").value);
   
-      const formdata = new FormData();
+    const formdata = new FormData();
       formdata.append("image", newImg);
       formdata.append("title", titre);
       formdata.append("category", categorie);
 
-      console.log([...formdata.entries()]);
-
- 
-      fetch(`${urlAPI}`, {
+      const resultat = await fetch(`${urlAPI}`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`
@@ -299,26 +310,40 @@ async function addProject(e) {
         body: formdata,
       })
       .then(res => {
-        if (res.ok) {
-          console.log("Nouveau projet ajouté!");
-          const hideicon = document.querySelector(".fa-image");
-          hideicon.classList.remove("js-hide");
-        } else {
-          console.log("Le projet n'a pas pu être ajouté");
-        }
-        return res;
-      })
-      .then(res => console.log(res))
-      .catch(error => console.log(error));
-    });
-    reader.readAsArrayBuffer(newImg);
-  };
+            if (res.ok) {
+            const msgSuccess = document.querySelector("p.msg-success")
+            msgSuccess.textContent =`Nouveau projet ${titre} ajouté !`       
+            setTimeout(() => { msgSuccess.classList.add("js-hide")},2000)
+            }else{
+                console.log("Le projet n'a pas pu être ajouté");
+            }
+            return res;
+        })
+       .catch(error => console.log("error",error));  
+    
+        const formreset = document.getElementById("form-addProject")
+        formreset.reset()
+        const preview = document.getElementById('preview');
+        preview.src = "";
+
+        const hideicon = document.querySelector(".fa-image");
+        hideicon.createElement();
+        const hideLabel = document.querySelector(".label-input-photo");
+        hideLabel.remove()
+        const hideP = document.querySelector(".grey p");
+        hideP.remove();
+
+       
+       closeModal(e);
+
+   
+};
   
 
 // Code
 
-// console.log("works:", works);
-generateWorks(works);
+callAPI();
+
 
 document.querySelectorAll(".js-modal").forEach(a=> {
     a.addEventListener("click",openModal)
