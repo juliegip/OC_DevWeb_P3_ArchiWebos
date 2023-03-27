@@ -561,6 +561,11 @@ footer nav ul {
   color: #b1663c;
 }
 
+.msg-alert {
+  color: red;
+  font-weight: 600;
+}
+
 .msg-delete {
   font-size: 1.2em;
   color: red;
@@ -645,4 +650,6 @@ footer nav ul {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: #a7a7a7;
+  border: none;
 }

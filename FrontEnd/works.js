@@ -13,7 +13,7 @@ async function callAPI() {
     const response = await fetch (urlAPI);
     works = await response.json();
     generateWorks(works)
-    console.log(works)
+    // console.log(works)
   }
 
 function generateWorks(works) {
@@ -93,13 +93,13 @@ function filterGallery(event) {
     resetFilter(worksFiltered);
 }
 
-const cleanGalery = function() {
+const cleanGallery = function() {
     while (mainGallery.firstChild) {
         mainGallery.firstChild.remove()
     };
 }
 const resetFilter = function(worksFiltered) {
-    cleanGalery();
+    cleanGallery();
     generateWorks(worksFiltered);
 }
 
@@ -143,7 +143,7 @@ const openModal = function (e){
 const closeModal = function (e){
     e.preventDefault()
     viewModalMain();
-    cleanGalery();
+    cleanGallery();
     callAPI();
 
     if (modal == null) return
@@ -157,8 +157,6 @@ const closeModal = function (e){
     modal.querySelector(".js-modal-stop").removeEventListener("click",stopPropagation);
 
     modal = null
-
-   
 
 }
 
@@ -187,15 +185,33 @@ function viewModalAdd() {
     const arrowReturn = document.querySelector(".fa-arrow-left-long")
         arrowReturn.style.opacity = 1;
     
-    const projectToAddPhoto = document.getElementById("input-photo")
-    projectToAddPhoto.addEventListener("change",previewimg)
-    // console.log("projectToAddPhoto",projectToAddPhoto)
+    const inputPhoto = document.getElementById("input-photo")
+        inputPhoto.addEventListener("change",previewimg)   
     
+        document.getElementById("form-addProject").addEventListener("change",checkForm)
+
     const form = document.getElementById("form-addProject")
         form.addEventListener("submit",addProject);
         
 };
 
+
+
+function checkForm(){
+    console.log("check check")
+    const inputPhoto = document.getElementById("input-photo")
+    const inputTitre = document.getElementById("titre")
+    
+    const btnValider = document.getElementById("valider")
+
+    if (inputTitre.value && inputPhoto.value) {
+        btnValider.style.backgroundColor = "#1d6154";
+        btnValider.disabled = false;
+    } else {
+        btnValider.disabled = true;
+        btnValider.style.backgroundColor = "";
+    }
+}
 
 // Gestion de la galerie dans la modale 
 
@@ -268,25 +284,36 @@ function deleteProject(projectId,figure) {
 
 
 // Ajouter un projet :
-function previewimg(){
-    const hideicon = document.querySelector(".fa-image");
-    hideicon.classList.add("js-hide")
-    const hideLabel = document.querySelector(".label-input-photo");
-    hideLabel.classList.add("js-hide")
-    const hideP = document.querySelector(".grey p");
-    hideP.classList.add("js-hide")
-        
+function previewimg(){       
     const preview = document.getElementById('preview');
     // while(preview.firstChild) {
     //     preview.removeChild(preview.firstChild)}
     const file = this.files[0];
-    const reader = new FileReader();
-    reader.addEventListener("load", function(){
+    const fileSize = this.files[0].size;
+    if (fileSize >= 4000000){
+        console.log("fichier trop volumineux")
+        const msgAlert = document.querySelector("p.msg-alert");
+            msgAlert.textContent = "Impossible d'ajouter la photo. Fichier trop volumineux"
+        file.value="";
+    
+    } else {
+        const hideicon = document.querySelector(".fa-image");
+        hideicon.classList.add("js-hide")
+        hideicon.classList.remove("fa-regular")
+        const hideLabel = document.getElementById("label-input-photo");
+        hideLabel.classList.add("js-hide")
+        hideLabel.classList.remove("label-input-photo")
+        const hideP = document.querySelector(".grey p");
+        hideP.classList.add("js-hide")
+    
+        const reader = new FileReader();
+            reader.addEventListener("load", function(){
         preview.src = reader.result;
-    });
+        });
 
-    if (file){
+        if (file){
         reader.readAsDataURL(file);
+        }
     }
 };
 
@@ -302,7 +329,7 @@ async function addProject(e) {
       formdata.append("title", titre);
       formdata.append("category", categorie);
 
-      const resultat = await fetch(`${urlAPI}`, {
+    await fetch(`${urlAPI}`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`
@@ -312,10 +339,10 @@ async function addProject(e) {
       .then(res => {
             if (res.ok) {
             const msgSuccess = document.querySelector("p.msg-success")
-            msgSuccess.textContent =`Nouveau projet ${titre} ajouté !`       
+                msgSuccess.textContent =`Le projet ${titre} a été ajouté!`       
             setTimeout(() => { msgSuccess.classList.add("js-hide")},2000)
             }else{
-                console.log("Le projet n'a pas pu être ajouté");
+                console.log("Le projet n'a pas pu être ajouté"); // fonctionalité message d'erreur à ajouter
             }
             return res;
         })
@@ -327,15 +354,20 @@ async function addProject(e) {
         preview.src = "";
 
         const hideicon = document.querySelector(".fa-image");
-        hideicon.createElement();
-        const hideLabel = document.querySelector(".label-input-photo");
-        hideLabel.remove()
+        hideicon.classList.remove("js-hide")
+        hideicon.classList.add("fa-regular")
+        const hideLabel = document.getElementById("label-input-photo");
+        hideLabel.classList.remove("js-hide")
+        hideLabel.classList.add("label-input-photo")
         const hideP = document.querySelector(".grey p");
-        hideP.remove();
+        hideP.classList.remove("js-hide")
 
        
-       closeModal(e);
+       setTimeout(()=> {
+        closeModal(e)
+       },2500) ;
 
+    
    
 };
   
