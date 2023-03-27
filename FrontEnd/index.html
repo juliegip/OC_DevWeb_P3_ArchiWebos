@@ -52,7 +52,6 @@
       </header>
       <main>
         <section>
-          <button id="test">TEST</button>
           <div id="introduction">
             <figure>
               <img src="./assets/images/sophie-bluel.png" alt="" />
@@ -136,27 +135,72 @@
         aria-labelledby="modal-title"
         style="display: none"
       >
-        >
         <div class="modal-wrapper js-modal-stop">
-          <div class="js-modal-close"><i class="fa-solid fa-x"></i></div>
-          <h3 id="modal-title">Galerie photo</h3>
-          <div class="modal-gallery">
-            <!-- <figure>
-              <div class="icon-container">
-                <i class="fa-solid fa-arrows-up-down-left-right"></i>
-                <i class="fa-solid fa-trash-can"></i>
-              </div>
-              <img
-                src="assets/images/abajour-tahina.png"
-                alt="Abajour Tahina"
-              />
-              <figcaption><a href="#">éditer</a></figcaption>
-            </figure> -->
+          <div class="modal-window-btn">
+            <i
+              class="modal-add js-modal-back fa-solid fa-arrow-left-long"
+              style="opacity: 0.01"
+            ></i>
+            <i class="js-modal-close fa-solid fa-x"></i>
           </div>
-          <div class="separation"></div>
-          <div class="modal-buttons">
-            <input type="submit" value="Ajouter une photo" />
-            <a href="#">Supprimer la galerie</a>
+
+          <div class="modal-content">
+            <div class="modal-main">
+              <h3 id="modal-title">Galerie photo</h3>
+              <div class="modal-gallery"></div>
+              <div class="separation"></div>
+              <div class="modal-buttons">
+                <input
+                  id="add-project"
+                  type="submit"
+                  value="Ajouter une photo"
+                />
+                <a href="#">Supprimer la galerie</a>
+                <p class="msg-delete"></p>
+              </div>
+            </div>
+
+            <div class="modal-add js-hide">
+              <h3 id="modal-title">Ajout photo</h3>
+              <form class="titreCategorie" id="post-project" method="post">
+                <div class="grey">
+                  <img src="" alt="" id="preview" />
+                  <i class="fa-regular fa-image"></i>
+                  <label for="input-photo" class="label-input-photo"
+                    >+ Ajouter une photo</label
+                  >
+                  <input
+                    type="file"
+                    id="input-photo"
+                    name="input-photo"
+                    accept="image/png, image/jpg"
+                    class="hidden-input-photo"
+                  />
+                  <p>jpg, png : 4mo max</p>
+                </div>
+
+                <div class="form-item">
+                  <label for="titre">Titre</label>
+                  <input
+                    type="text"
+                    name="titre"
+                    id="titre"
+                    placeholder="Malt & Juniper - New-York"
+                    required
+                  />
+                </div>
+                <div class="form-item">
+                  <label for="categorie">Catégorie</label>
+                  <select name="categorie" id="categorie" required>
+                    <option value="3">Hôtels & Restaurants</option>
+                    <option value="1">Objets</option>
+                    <option value="2">Appartements</option>
+                  </select>
+                </div>
+                <div class="separation"></div>
+                <input id="valider" type="submit" value="Valider" />
+              </form>
+            </div>
           </div>
         </div>
       </aside>

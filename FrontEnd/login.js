@@ -42,5 +42,5 @@ if(checkbtn) {
 
 
 
-    
-        
+        /* function logout
+         function adminMode */
