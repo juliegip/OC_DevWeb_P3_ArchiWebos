@@ -28,8 +28,9 @@ let cat = window.localStorage.getItem("cat");
         window.localStorage.setItem("cat",datacat)
     } else {
         cat = JSON.parse(cat)
-    }
+    };
  
+// Affichage de la galerie des projets
 function generateWorks(works) {
 
     for (let i=0 ; i< works.length; i++) {
@@ -52,9 +53,11 @@ function generateWorks(works) {
         // Rattachement des éléments d'un projet
         elementProjet.appendChild(image);
         elementProjet.appendChild(caption);
-};};
+    };
+};
 
 
+// Gestion du mode admin
 function adminMode(){
     const adminElements = document.querySelectorAll(".admin-elements");
         adminElements.forEach(function(e) {
@@ -83,7 +86,8 @@ function logOut(){
         sessionStorage.removeItem("token");
         window.location.href = "index.html";
 
-}
+};
+
 
 // Gestion des filtres 
 const cleanGallery = function() {
@@ -112,6 +116,7 @@ function filterGallery(event) {
 
     resetFilter(worksFiltered);
 }
+
 
 // Gestion de la fenêtre modale        
 let modal = null
@@ -166,6 +171,7 @@ const stopPropagation = function (e) {
     e.stopPropagation();
 }
 
+
 // Gestion des différentes vues de la modale (vue Galerie Photos, vue Ajout Photos)
 function viewModalMain(){
     const toHideAdd = document.querySelectorAll(".modal-add");
@@ -194,7 +200,7 @@ function viewModalAdd() {
         
 };
 
-// Gestion de la galerie dans la modale 
+// Gestion de l'affichage de la galerie dans la modale 
 
 function generateWorksInModal() {
     console.log("works in modal",works)
@@ -266,7 +272,7 @@ function deleteProject(projectId,figure) {
     .catch(error => console.log(error));
 };
 
-// Ajouter un projet :
+// Gestion du formulaire d'ajout de projet
 function checkForm(){
     const inputPhoto = document.getElementById("input-photo")
     const inputTitre = document.getElementById("titre")
@@ -279,6 +285,25 @@ function checkForm(){
         btnValider.disabled = true;
         btnValider.style.backgroundColor = "";
     }
+}
+
+function resetForm(){
+    const formreset = document.getElementById("form-addProject")
+    formreset.reset()
+    const preview = document.getElementById('preview');
+    preview.src = "";
+
+    const hideicon = document.querySelector(".fa-image");
+    hideicon.classList.remove("js-hide")
+    hideicon.classList.add("fa-regular")
+    const hideLabel = document.getElementById("label-input-photo");
+    hideLabel.classList.remove("js-hide")
+    hideLabel.classList.add("label-input-photo")
+    const hideP = document.querySelector(".grey p");
+    hideP.classList.remove("js-hide")
+    const btnValider = document.getElementById("valider")
+    btnValider.disabled = true;
+    btnValider.style.backgroundColor = "";
 }
 
 function previewimg(){       
@@ -308,13 +333,13 @@ function previewimg(){
     }
 };
 
-class newWork {
-
-    constructor (image,titre,categorie) {
-        this.imgURL = URL.createObjectURL(image)
-        this.titre = titre
+// Fonction -> Ajouter un projet :
+class newProject {
+    constructor (imageUrl,titre,categorie) {
+        this.imageUrl = imageUrl
+        this.title = titre
         const category = cat.find((c) => c.id === categorie)
-        this.categorie = category.name
+        this.category = category
     }
 }
 
@@ -322,11 +347,9 @@ async function addProject(e) {
     e.preventDefault();
     
     const newImg = document.getElementById("input-photo").files[0];
-    console.log("newImg",newImg)
+   
     const titre = document.getElementById("titre").value;
-    console.log("titre",titre)
     const categorie = parseInt(document.getElementById("categorie").value);
-    console.log("categorie",categorie)
   
     const formdata = new FormData();
       formdata.append("image", newImg);
@@ -344,14 +367,22 @@ async function addProject(e) {
             if (res.ok) {
                 const msgSuccess = document.querySelector("p.msg-success")
                 msgSuccess.textContent =`Le projet ${titre} a été ajouté!`       
-                setTimeout(() => { msgSuccess.classList.add("js-hide")},2000)                
-                const toAddToWorks = new newWork(newImg, titre, categorie);
-                console.log("toAddToWorks",toAddToWorks)
-                works.push(toAddToWorks)
+                setTimeout(() => { msgSuccess.classList.add("js-hide")},2000)  
+                
+                const reader = new FileReader();
+                reader.onload = function() {
+                    const imageDataUrl = reader.result
+                    const toAddToWorks = new newProject(imageDataUrl, titre, categorie);
+                    console.log("toAddToWorks",toAddToWorks)
+                    works.push(toAddToWorks)
+                };
+                reader.readAsDataURL(newImg)
+           
                 console.log("works apres ajout",works)
                 setTimeout(()=> {closeModal(e)},2100) ;
+
             }else{
-                console.log("Le projet n'a pas pu être ajouté"); // fonctionalité message d'erreur à ajouter
+                console.log("Le projet n'a pas pu être ajouté");
                 const msgFailed = document.querySelector("p.msg-failed")
                 msgFailed.textContent =`Le projet ${titre} n'a pas pu être ajouté!`   
             }
@@ -361,20 +392,7 @@ async function addProject(e) {
         })
        .catch(error => console.log("error",error));  
            
-        const formreset = document.getElementById("form-addProject")
-        formreset.reset()
-        const preview = document.getElementById('preview');
-        preview.src = "";
-
-        const hideicon = document.querySelector(".fa-image");
-        hideicon.classList.remove("js-hide")
-        hideicon.classList.add("fa-regular")
-        const hideLabel = document.getElementById("label-input-photo");
-        hideLabel.classList.remove("js-hide")
-        hideLabel.classList.add("label-input-photo")
-        const hideP = document.querySelector(".grey p");
-        hideP.classList.remove("js-hide")
-              
+    resetForm();
 };
   
 
@@ -395,6 +413,6 @@ window.addEventListener("keydown",function(e){
 document.getElementById("logout-menu").addEventListener("click",logOut);
 
 window.onbeforeunload = function() {
-    localStorage.removeItem("works");
+    window.localStorage.clear();
     sessionStorage.removeItem("token");
 }

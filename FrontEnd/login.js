@@ -17,7 +17,7 @@ const loginDetails = {
                     return r.json()
                 
                 } else {
-                    throw new Error ("Identifiant/Mot de passe incorrect. Veuillez saisir à nouveau");
+                    throw new Error ("Erreur dans l’identifiant ou le mot de passe");
                 }
             })
             .then(data => {
@@ -28,7 +28,7 @@ const loginDetails = {
             .catch(error => {
                 console.error(error);
                 const errorElement = document.querySelector("p.msg-error");
-                errorElement.textContent ="Email/Mot de passe incorrect. Veuillez saisir à nouveau";
+                errorElement.textContent ="Erreur dans l’identifiant ou le mot de passe";
             }); 
            
     }       
