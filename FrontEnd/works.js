@@ -1,21 +1,35 @@
-
 let token = window.sessionStorage.getItem("token");
 if (token !== undefined && token!== null){
     adminMode()};
 
 const urlAPI = 'http://localhost:5678/api/works'
+const urlAPICat = 'http://localhost:5678/api/categories'
 const mainGallery  = document.querySelector(".gallery");
 const modalGallery  = document.querySelector(".modal-gallery");
 
-let works = [];
+let works = window.localStorage.getItem("works");
+    if (works === null) {
+        const response = await fetch (urlAPI);
+        works = await response.json();
+        const dataworks = JSON.stringify(works);
+        window.localStorage.setItem("works",dataworks)
+    
+}
+    else {
+        works = JSON.parse(works)
+        
+    }
 
-async function callAPI() {
-    const response = await fetch (urlAPI);
-    works = await response.json();
-    generateWorks(works)
-    // console.log(works)
-  }
-
+let cat = window.localStorage.getItem("cat");
+    if (cat === null){
+        const response = await fetch(urlAPICat);
+        cat = await response.json();
+        const datacat = JSON.stringify(cat);
+        window.localStorage.setItem("cat",datacat)
+    } else {
+        cat = JSON.parse(cat)
+    }
+ 
 function generateWorks(works) {
 
     for (let i=0 ; i< works.length; i++) {
@@ -38,13 +52,10 @@ function generateWorks(works) {
         // Rattachement des éléments d'un projet
         elementProjet.appendChild(image);
         elementProjet.appendChild(caption);
-     
-        
 };};
 
 
 function adminMode(){
-
     const adminElements = document.querySelectorAll(".admin-elements");
         adminElements.forEach(function(e) {
             e.classList.add("show-as-admin");
@@ -53,7 +64,6 @@ function adminMode(){
     const loginMenu = document.getElementById("login-menu");
     loginMenu.remove();
     };
-
 
 function logOut(){
     const logOutElements = document.querySelectorAll(".show-as-admin");
@@ -71,28 +81,11 @@ function logOut(){
         const listMenu = document.querySelector("#menu");
         listMenu.insertBefore(loginMenu,thirdPlace)
         sessionStorage.removeItem("token");
-        
         window.location.href = "index.html";
 
 }
 
 // Gestion des filtres 
-function filterGallery(event) {
-        
-    btnFilter.forEach(btn => {
-    btn.classList.remove("btn-selected");
-  });
-    event.target.classList.add("btn-selected");
-    const filterCategoryName = event.target.textContent;
-    const worksFiltered = works.filter(function(work){
-        return work.category.name === filterCategoryName;
-    });
-    
-    // console.log(filterCategoryName);
-    // console.log(worksFiltered);
-    resetFilter(worksFiltered);
-}
-
 const cleanGallery = function() {
     while (mainGallery.firstChild) {
         mainGallery.firstChild.remove()
@@ -105,8 +98,20 @@ const resetFilter = function(worksFiltered) {
 
 const btnFilter = document.querySelectorAll(".btn-filter");
     btnFilter.forEach(btn =>{btn.addEventListener("click",filterGallery)});
-document.querySelector(".resetfilter").addEventListener("click",() => resetFilter(works));
+    document.querySelector(".resetfilter").addEventListener("click",() => resetFilter(works));
 
+function filterGallery(event) {     
+    btnFilter.forEach(btn => {
+    btn.classList.remove("btn-selected");
+  });
+    event.target.classList.add("btn-selected");
+    const filterCategoryName = event.target.textContent;
+    const worksFiltered = works.filter(function(work){
+        return work.category.name === filterCategoryName;
+    });
+
+    resetFilter(worksFiltered);
+}
 
 // Gestion de la fenêtre modale        
 let modal = null
@@ -135,16 +140,14 @@ const openModal = function (e){
         })
 
     const btnAjoutProjet = document.querySelector("#add-project");
-        btnAjoutProjet.addEventListener("click",viewModalAdd)
-    
-        
+        btnAjoutProjet.addEventListener("click",viewModalAdd)      
 }
 
 const closeModal = function (e){
     e.preventDefault()
     viewModalMain();
     cleanGallery();
-    callAPI();
+    generateWorks(works);
 
     if (modal == null) return
 
@@ -157,15 +160,13 @@ const closeModal = function (e){
     modal.querySelector(".js-modal-stop").removeEventListener("click",stopPropagation);
 
     modal = null
-
 }
 
 const stopPropagation = function (e) {
     e.stopPropagation();
 }
 
-// Affichage dans la modale de la Galerie Photos
-
+// Gestion des différentes vues de la modale (vue Galerie Photos, vue Ajout Photos)
 function viewModalMain(){
     const toHideAdd = document.querySelectorAll(".modal-add");
         toHideAdd.forEach(element => (element.classList.add("js-hide")))
@@ -174,8 +175,6 @@ function viewModalMain(){
     const arrowReturn = document.querySelector(".fa-arrow-left-long")
         arrowReturn.style.opacity = 0.01
 };  
-
-// Affichage dans la modale de l'écran d'Ajouter Photo
 
 function viewModalAdd() {
     const toHideAdd = document.querySelectorAll(".modal-add");
@@ -195,28 +194,10 @@ function viewModalAdd() {
         
 };
 
-
-
-function checkForm(){
-    console.log("check check")
-    const inputPhoto = document.getElementById("input-photo")
-    const inputTitre = document.getElementById("titre")
-    
-    const btnValider = document.getElementById("valider")
-
-    if (inputTitre.value && inputPhoto.value) {
-        btnValider.style.backgroundColor = "#1d6154";
-        btnValider.disabled = false;
-    } else {
-        btnValider.disabled = true;
-        btnValider.style.backgroundColor = "";
-    }
-}
-
 // Gestion de la galerie dans la modale 
 
 function generateWorksInModal() {
-
+    console.log("works in modal",works)
     while (modalGallery.firstChild) {
         modalGallery.firstChild.remove()}
 
@@ -243,7 +224,6 @@ function generateWorksInModal() {
         // Rattachement de la balise projet à la section Gallery
         modalGallery.appendChild(elementProjet);
 
-        
         //Rattachement des icons 
         iconContainer.appendChild(iconArrow);
         iconContainer.appendChild(iconTrash)
@@ -259,41 +239,55 @@ function generateWorksInModal() {
 // Supprimer un projet :
 function deleteProject(projectId,figure) {
 
+    let index = works.findIndex(function(element){
+        return element.id == projectId;
+    })
+
     fetch(`${urlAPI}/${projectId}`,{
         method:"DELETE",
         headers: { 
             "Authorization":`Bearer ${token}`}
     })
     .then(res => {
-        if (res.ok) {console.log(`Le projet ${projectId} a été supprimé`)}
+        if (res.ok) {console.log(`Le projet avec l'id :${projectId} a été supprimé`)}
         else {console.log(ERROR)}
         return res
     })
-    .then(res =>console.log(res))
+    // .then(res =>console.log(res))
     .then(()=>{
         figure.remove();
         const msgDeleteProject = document.querySelector("p.msg-delete");
             msgDeleteProject.textContent =`Projet ${projectId} supprimé`
         setTimeout(() => { msgDeleteProject.classList.add("js-hide")
         }, 2000); 
-       
+        works.splice(index,1)
+        console.log("works after splice",works)  
     })
     .catch(error => console.log(error));
-    console.log("works",works)  
 };
 
-
 // Ajouter un projet :
+function checkForm(){
+    const inputPhoto = document.getElementById("input-photo")
+    const inputTitre = document.getElementById("titre")
+    const btnValider = document.getElementById("valider")
+
+    if (inputTitre.value && inputPhoto.value) {
+        btnValider.style.backgroundColor = "#1d6154";
+        btnValider.disabled = false;
+    } else {
+        btnValider.disabled = true;
+        btnValider.style.backgroundColor = "";
+    }
+}
+
 function previewimg(){       
     const preview = document.getElementById('preview');
-    // while(preview.firstChild) {
-    //     preview.removeChild(preview.firstChild)}
     const file = this.files[0];
     const fileSize = this.files[0].size;
-    if (fileSize >= 4000000){
-        console.log("fichier trop volumineux")
+    if (fileSize >= 4194304){
         const msgAlert = document.querySelector("p.msg-alert");
-            msgAlert.textContent = "Impossible d'ajouter la photo. Fichier trop volumineux"
+        msgAlert.textContent = "Impossible d'ajouter la photo. Fichier trop volumineux"
         file.value="";
     
     } else {
@@ -307,22 +301,32 @@ function previewimg(){
         hideP.classList.add("js-hide")
     
         const reader = new FileReader();
-            reader.addEventListener("load", function(){
+        reader.addEventListener("load", function(){
         preview.src = reader.result;
         });
-
-        if (file){
-        reader.readAsDataURL(file);
-        }
+        if (file){reader.readAsDataURL(file);}
     }
 };
+
+class newWork {
+
+    constructor (image,titre,categorie) {
+        this.imgURL = URL.createObjectURL(image)
+        this.titre = titre
+        const category = cat.find((c) => c.id === categorie)
+        this.categorie = category.name
+    }
+}
 
 async function addProject(e) {
     e.preventDefault();
     
     const newImg = document.getElementById("input-photo").files[0];
+    console.log("newImg",newImg)
     const titre = document.getElementById("titre").value;
+    console.log("titre",titre)
     const categorie = parseInt(document.getElementById("categorie").value);
+    console.log("categorie",categorie)
   
     const formdata = new FormData();
       formdata.append("image", newImg);
@@ -338,16 +342,25 @@ async function addProject(e) {
       })
       .then(res => {
             if (res.ok) {
-            const msgSuccess = document.querySelector("p.msg-success")
+                const msgSuccess = document.querySelector("p.msg-success")
                 msgSuccess.textContent =`Le projet ${titre} a été ajouté!`       
-            setTimeout(() => { msgSuccess.classList.add("js-hide")},2000)
+                setTimeout(() => { msgSuccess.classList.add("js-hide")},2000)                
+                const toAddToWorks = new newWork(newImg, titre, categorie);
+                console.log("toAddToWorks",toAddToWorks)
+                works.push(toAddToWorks)
+                console.log("works apres ajout",works)
+                setTimeout(()=> {closeModal(e)},2100) ;
             }else{
                 console.log("Le projet n'a pas pu être ajouté"); // fonctionalité message d'erreur à ajouter
+                const msgFailed = document.querySelector("p.msg-failed")
+                msgFailed.textContent =`Le projet ${titre} n'a pas pu être ajouté!`   
             }
-            return res;
+            return res;       
+
+
         })
        .catch(error => console.log("error",error));  
-    
+           
         const formreset = document.getElementById("form-addProject")
         formreset.reset()
         const preview = document.getElementById('preview');
@@ -361,22 +374,14 @@ async function addProject(e) {
         hideLabel.classList.add("label-input-photo")
         const hideP = document.querySelector(".grey p");
         hideP.classList.remove("js-hide")
-
-       
-       setTimeout(()=> {
-        closeModal(e)
-       },2500) ;
-
-    
-   
+              
 };
   
 
 // Code
-
-callAPI();
-
-
+generateWorks(works)
+console.log(works)
+console.log(cat)
 document.querySelectorAll(".js-modal").forEach(a=> {
     a.addEventListener("click",openModal)
 });
@@ -388,3 +393,8 @@ window.addEventListener("keydown",function(e){
 });
 
 document.getElementById("logout-menu").addEventListener("click",logOut);
+
+window.onbeforeunload = function() {
+    localStorage.removeItem("works");
+    sessionStorage.removeItem("token");
+}

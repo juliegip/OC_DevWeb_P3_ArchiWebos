@@ -346,6 +346,7 @@ footer nav ul {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 30vw;
 }
 
 .form-item {
@@ -579,7 +580,12 @@ footer nav ul {
   color: #1d6154;
   font-weight: 600;
   display: block;
-  /* padding-top: 0px; */
+}
+.msg-failed {
+  font-size: 1.2em;
+  color: red;
+  font-weight: 600;
+  display: block;
 }
 
 .js-hide {
