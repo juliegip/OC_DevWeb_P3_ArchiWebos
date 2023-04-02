@@ -131,12 +131,11 @@
         id="modal1"
         class="modal"
         aria-hidden="true"
-        role="dialog"
         aria-labelledby="modal-title"
         style="display: none"
       >
         <div class="modal-wrapper js-modal-stop">
-          <div class="modal-window-btn">
+          <div id="modal-btn" class="modal-window-btn">
             <i
               class="modal-add js-modal-back fa-solid fa-arrow-left-long"
               style="opacity: 0.01"
@@ -146,7 +145,7 @@
 
           <div class="modal-content">
             <div class="modal-main">
-              <h3 id="modal-title">Galerie photo</h3>
+              <h3>Galerie photo</h3>
               <div class="modal-gallery"></div>
               <div class="separation"></div>
               <div class="modal-buttons">
@@ -161,7 +160,7 @@
             </div>
 
             <div class="modal-add js-hide">
-              <h3 id="modal-title">Ajout photo</h3>
+              <h3>Ajout photo</h3>
               <form id="form-addProject" method="post">
                 <div class="grey">
                   <img id="preview" src="" alt="" />
@@ -196,6 +195,7 @@
                 <div class="form-item">
                   <label for="categorie">Catégorie</label>
                   <select name="categorie" id="categorie" required>
+                    <option value=""></option>
                     <option value="3">Hôtels & Restaurants</option>
                     <option value="1">Objets</option>
                     <option value="2">Appartements</option>

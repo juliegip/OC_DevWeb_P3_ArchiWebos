@@ -139,16 +139,17 @@ body {
   max-width: 1140px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   margin: auto;
 }
 header {
   display: flex;
   justify-content: space-between;
-  margin: 50px 0;
+  padding: 50px 0;
   background-color: #fffef8;
 }
 section {
-  margin: 50px 0;
+  padding: 50px 0;
   background-color: #fffef8;
 }
 
@@ -214,7 +215,7 @@ li a {
 }
 #introduction img {
   display: block;
-  margin: auto;
+
   width: 80%;
 }
 
@@ -230,19 +231,25 @@ li a {
 }
 #portfolio h2 {
   text-align: center;
-  margin-bottom: 1em;
+  /*  */
+  margin-right: -30px;
+}
+#portfolio div div {
+  margin-left: 60px;
 }
 
 .portfolio-title {
   display: flex;
   justify-content: center;
+  align-items: center;
+  padding-bottom: 50px;
+  background-color: #fffef8;
 }
 
 .filter {
   display: flex;
   justify-content: center;
-  margin: 10px auto;
-  margin-bottom: 50px;
+
   /* display: none; */
 }
 
@@ -268,13 +275,14 @@ li a {
   grid-template-columns: 1fr 1fr 1fr;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
+  padding-top: 60px;
+  background-color: #fffef8;
 }
 
 .gallery img {
   width: 100%;
 }
 #contact {
-  width: 50%;
   margin: auto;
 }
 #contact > * {
@@ -285,9 +293,12 @@ li a {
 }
 #contact form {
   text-align: left;
-  margin-top: 30px;
+  padding-top: 30px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  width: 50%;
+  margin: auto;
 }
 
 #contact input {
@@ -352,7 +363,6 @@ footer nav ul {
 .form-item {
   display: flex;
   flex-direction: column;
-  align-items: left;
 }
 
 .form-item input {
@@ -391,7 +401,7 @@ footer nav ul {
 }
 
 .show-as-admin {
-  display: null;
+  display: block;
 }
 
 .admin-mode {
@@ -421,8 +431,6 @@ footer nav ul {
 
 .modify {
   margin: 20px 0;
-  /* margin-left: 57px; */
-  /* display: none; */
 }
 .modify a {
   text-decoration: none;
@@ -623,7 +631,7 @@ footer nav ul {
   text-align: center;
   border-radius: 60px;
   height: 36px;
-  width: 16vw;
+  width: 10vw;
   font-size: 0.9em;
   border: none;
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
@@ -644,7 +652,6 @@ footer nav ul {
 
 #categorie {
   height: 50px;
-  /* width: 20vw; */
   font-size: 1.2em;
   border: none;
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
