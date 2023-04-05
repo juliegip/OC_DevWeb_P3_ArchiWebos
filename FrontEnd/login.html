@@ -10,7 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap"
       rel="stylesheet"
     />
-    <meta name="description" content="" />
+    <meta name="login" content="" />
     <link rel="stylesheet" href="./assets/style.css" />
   </head>
   <body>
@@ -34,19 +34,16 @@
         <section id="login">
           <h2>Log In</h2>
 
-          <form id="form-id">
-            <div class="form-item">
-              <label for="email">E-mail</label>
-              <input type="text" name="email" id="email" required />
-            </div>
-            <div class="form-item">
-              <label for="password">Mot de passe</label>
-              <input type="password" name="password" id="password" required />
-            </div>
+          <form id="form-id" action="#" method="post">
+            <label for="email">E-mail</label>
+            <input type="text" name="email" id="email" required />
+            <label for="password">Mot de passe</label>
+            <input type="password" name="password" id="password" required />
             <input type="submit" value="Se connecter" />
-            <p><a href="#">Mot de passe oublié</a></p>
+
             <p class="msg-error"></p>
           </form>
+          <p><a href="#">Mot de passe oublié</a></p>
         </section>
       </main>
       <footer>
