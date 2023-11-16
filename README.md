@@ -5,6 +5,6 @@ Contraintes :
 + manipulation des éléments du DOM Javascript
 + Récupération des données utilisateurs via des formulaires Javascript
 
- # Pour lancer le projet
+ ### Pour lancer le projet
  se placer dans le dossier backend et `npm start`
  
